@@ -19,4 +19,5 @@ def create(data:DatasetInput,db=Depends(get_db),u=Depends(can_write)):
 def detail(id:int,db=Depends(get_db),u=Depends(current_user)):
     d=db.get(Dataset,id)
     if not d:raise HTTPException(404,'数据批次不存在')
-    return {**dataset_dict(d),'records':d.records}
+    # 合并批次详情带完整逐条来源判定，普通批次只返回读数。
+    return {**dataset_dict(d),'records':d.records,'merge':d.merge_summary}

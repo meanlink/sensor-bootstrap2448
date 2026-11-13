@@ -9,3 +9,7 @@ class Dataset(Base):
     records: Mapped[list] = mapped_column(JSON)
     checksum: Mapped[str] = mapped_column(String(64))
     created_at: Mapped[float] = mapped_column(Double)
+    # 合并批次：merge_key 保证同一组来源只落一个批次，来源数据集本身不修改。
+    merge_key: Mapped[str | None] = mapped_column(String(64), unique=True, nullable=True)
+    merged_from: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    merge_summary: Mapped[dict | None] = mapped_column(JSON, nullable=True)
